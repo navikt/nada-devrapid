@@ -41,7 +41,7 @@ dependencies {
     implementation(Ktor.serialization)
 
     // Konfiguration
-    implementation(Konfig)
+    implementation(Konfig.konfig)
 
     // Logging
     implementation(Kotlin.Logging.kotlinLogging)

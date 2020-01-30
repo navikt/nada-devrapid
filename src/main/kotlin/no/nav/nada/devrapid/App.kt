@@ -6,14 +6,7 @@ import mu.KotlinLogging
 val logger = KotlinLogging.logger {}
 fun main(args: Array<String>) {
     runBlocking {
-        Server.startServer(getPort("PORT", 9090)).start(false)
+        val konfig = Configuration()
+        Server.startServer(konfig.application.port).start(false)
     }
-}
-
-fun getEnv(envName: String): String? {
-    return System.getenv(envName)
-}
-
-fun getPort(envName: String, default: Int): Int {
-    return getEnv(envName)?.toInt() ?: default
 }

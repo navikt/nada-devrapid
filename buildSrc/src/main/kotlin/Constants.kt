@@ -24,7 +24,9 @@ object KafkaEmbedded {
     const val version = "2.3.0"
     const val env = "no.nav:kafka-embedded-env:$version"
 }
-
+object Konfig {
+    const val konfig = "com.natpryce:konfig:1.6.10.0"
+}
 object Kotlin {
     const val version = "1.3.61"
     object Logging {
