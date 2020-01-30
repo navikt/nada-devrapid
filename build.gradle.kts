@@ -40,6 +40,9 @@ dependencies {
     implementation(Ktor.metrics("micrometer"))
     implementation(Ktor.serialization)
 
+    // Konfiguration
+    implementation(Konfig)
+
     // Logging
     implementation(Kotlin.Logging.kotlinLogging)
     implementation(Log4j2.api)
