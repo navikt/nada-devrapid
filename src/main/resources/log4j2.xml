@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" packages="com.vlkan.log4j2.logstash.layout,io.prometheus.client.log4j2">
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <LogstashLayout dateTimeFormatPattern="yyyy-MM-dd'T'HH:mm:ss.SSSZZZ"
+                            eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json"
+                            prettyPrintEnabled="false"
+                            stackTraceEnabled="true"/>
+        </Console>
+        <Prometheus name="metrics" />
+    </Appenders>
+    <Loggers>
+        <Logger name="no.nav" level="debug" />
+        <Logger name="org.apache.kafka" level="warn" />
+        <Root level="info">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="metrics" />
+        </Root>
+    </Loggers>
+</Configuration>

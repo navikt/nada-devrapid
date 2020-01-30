@@ -1,0 +1,30 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: nada-devrapid
+  labels:
+    team: dataplattform
+spec:
+  image: {{ image }}
+  port: 9090
+  ingresses: {{#each ingresses as |url|}}
+     - {{url}}
+  {{/each}}
+  replicas:
+    min: 1
+    max: 2
+    cpuThresholdPercentage: 70
+  liveness:
+    path: /isAlive
+  readiness:
+    path: /isReady
+  prometheus:
+    enabled: true
+    path: /prometheus
+  resources:
+    limits:
+      cpu: 600m
+      memory: 1024Mi
+    requests:
+      cpu: 300m
+      memory: 384Mi
