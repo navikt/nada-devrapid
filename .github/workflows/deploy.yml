@@ -17,6 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - uses: actions/cache@v1
+        name: Cache Gradle wrapper
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradlew-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradlew-
+      - uses: actions/cache@v1
         name: Cache dependencies
         with:
           path: ~/.gradle/caches
