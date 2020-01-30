@@ -2,6 +2,7 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: nada-devrapid
+  namespace: dataplattform
   labels:
     team: dataplattform
 spec:
