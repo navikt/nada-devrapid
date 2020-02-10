@@ -8,12 +8,21 @@ plugins {
     id(Spotless.spotless) version Spotless.version
     id(Shadow.shadow) version Shadow.version
 }
-
+val githubUser: String? by project
+val githubPassword: String? by project
 repositories {
     jcenter()
     mavenCentral()
     maven("http://packages.confluent.io/maven/")
     mavenLocal()
+    maven {
+        name = "nav-devrapid-schema"
+        url = uri("https://maven.pkg.github.com/navikt/nada-devrapid-schema")
+        credentials {
+            username = githubUser ?: "x-access-token"
+            password = githubPassword ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 configurations {
@@ -55,6 +64,9 @@ dependencies {
     implementation(Prometheus.library("common"))
     implementation(Prometheus.library("log4j2"))
     implementation(Micrometer.prometheusRegistry)
+
+    // Kafka
+    implementation(Nada.devRapidSchema)
 }
 
 configurations {

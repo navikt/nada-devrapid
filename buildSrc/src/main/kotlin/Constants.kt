@@ -1,5 +1,5 @@
 object AssertJ {
-    const val version = "3.14.0"
+    const val version = "3.15.0"
     const val core = "org.assertj:assertj-core:$version"
     fun library(name: String) = "org.assertj:assertj-$name:$version"
 }
@@ -62,6 +62,11 @@ object Log4j2 {
 object Micrometer {
     const val version = "1.3.3"
     const val prometheusRegistry = "io.micrometer:micrometer-registry-prometheus:$version"
+}
+
+object Nada {
+    const val version = "1.0.4"
+    const val devRapidSchema = "no.nav.nada:nada-devrapid-schema:$version"
 }
 
 object Prometheus {
