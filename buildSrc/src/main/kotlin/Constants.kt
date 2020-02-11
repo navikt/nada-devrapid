@@ -15,6 +15,13 @@ object Confluent {
     const val avroSerializer = "io.confluent:kafka-avro-serializer:$version"
 }
 
+object JUnit {
+    const val version = "5.6.0"
+    const val groupId = "org.junit.jupiter"
+    const val prefix = "junit-jupiter"
+    fun lib(suffix: String) = "$groupId:$prefix-$suffix:$version"
+}
+
 object Kafka {
     const val version = "2.4.0"
     const val clients = "org.apache.kafka:kafka-clients:$version"
@@ -34,7 +41,7 @@ object Kotlin {
         const val kotlinLogging = "io.github.microutils:kotlin-logging:$version"
     }
     object Serialization {
-        const val version = "0.14.0"
+        const val version = "0.13.0"
         const val runtime = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
     }
 }
@@ -65,7 +72,7 @@ object Micrometer {
 }
 
 object Nada {
-    const val version = "1.0.4"
+    const val version = "2.0.1"
     const val devRapidSchema = "no.nav.nada:nada-devrapid-schema:$version"
 }
 

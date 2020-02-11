@@ -52,6 +52,12 @@ dependencies {
     // Konfiguration
     implementation(Konfig.konfig)
 
+    // Kafka
+    implementation(Kafka.clients)
+    implementation(Confluent.avroSerializer)
+    implementation(Nada.devRapidSchema)
+    implementation("com.sksamuel.avro4k:avro4k-core:0.20.0")
+
     // Logging
     implementation(Kotlin.Logging.kotlinLogging)
     implementation(Log4j2.api)
@@ -65,8 +71,11 @@ dependencies {
     implementation(Prometheus.library("log4j2"))
     implementation(Micrometer.prometheusRegistry)
 
-    // Kafka
-    implementation(Nada.devRapidSchema)
+    // Test
+    testImplementation(JUnit.lib("api"))
+    testImplementation(JUnit.lib("engine"))
+    testImplementation(AssertJ.core)
+    testImplementation(Ktor.server("test-host"))
 }
 
 configurations {
