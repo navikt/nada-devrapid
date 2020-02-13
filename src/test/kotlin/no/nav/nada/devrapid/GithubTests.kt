@@ -12,6 +12,7 @@ import io.ktor.server.testing.withTestApplication
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import no.nav.nada.devrapid.schema.DevEvent
+import org.apache.avro.util.Utf8
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.nio.charset.Charset
@@ -48,7 +49,7 @@ class GithubTests {
         val messageSender: MessageSender = object : MessageSender {
             override suspend fun sendDevEvent(devEvent: DevEvent) {
                 val record = Avro.default.toRecord(DevEvent.serializer(), devEvent)
-                assertThat(record.get("application")).isEqualTo("unleash")
+                assertThat(record.get("application")).isEqualTo(Utf8("unleash"))
             }
         }
         withTestApplication(devRapidApi(messageSender)) {
