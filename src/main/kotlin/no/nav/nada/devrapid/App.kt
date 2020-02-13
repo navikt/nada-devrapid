@@ -7,6 +7,7 @@ import mu.KotlinLogging
 import org.apache.avro.generic.GenericRecord
 import org.apache.kafka.clients.producer.KafkaProducer
 import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 val logger = KotlinLogging.logger {}
 fun main(args: Array<String>) {
@@ -27,7 +28,7 @@ fun main(args: Array<String>) {
 
         Runtime.getRuntime().addShutdownHook(Thread {
             producer.close(Duration.ofSeconds(30))
-            app.stop(200, 30000)
+            app.stop(200, 30000, TimeUnit.MILLISECONDS)
         })
     }
 }

@@ -52,6 +52,14 @@ data class DevRapid(
             put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer::class.java)
             put(ProducerConfig.ACKS_CONFIG, "1")
             put(ProducerConfig.CLIENT_ID_CONFIG, "nada-devrapid-${UUID.randomUUID().toString().substring(0 until 16)}")
+            if (username.isNotEmpty()) {
+                putAll(addSecurity())
+            }
+        }
+    }
+    private fun addSecurity(): Properties {
+        return Properties().apply {
+
         }
     }
 }

@@ -47,7 +47,7 @@ object Kotlin {
 }
 
 object Ktor {
-    const val version = "1.3.0"
+    const val version = "1.2.5"
     const val groupId = "io.ktor"
     fun server(subComponent: String) = "$groupId:ktor-server-$subComponent:$version"
     fun metrics(subComponent: String) = "$groupId:ktor-metrics-$subComponent:$version"

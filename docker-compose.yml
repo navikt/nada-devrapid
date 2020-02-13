@@ -1,0 +1,69 @@
+version: "3.7"
+
+services:
+  nada-devrapid:
+    build: .
+    ports:
+      - "9090:9090"
+    networks:
+      nada.no:
+        aliases:
+          - nada-devrapid.nada.no
+    environment:
+      DEVRAPID_BOOTSTRAP: kafka.nada.no:9092
+
+    depends_on:
+      - kafka
+
+  zookeeper:
+    container_name: zookeeper
+    networks:
+      nada.no:
+        aliases:
+          - zookeeper.nada.no
+    image: "confluentinc/cp-zookeeper:5.4.0"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: "2181"
+      ZOOKEEPER_TICK_TIME: "2000"
+  kafka:
+    container_name: kafka
+    networks:
+      nada.no:
+        aliases:
+          - kafka.nada.no
+    image: "confluentinc/cp-kafka:5.4.0"
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+    environment:
+      ADV_HOST: "kafka.nada.no"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper.nada.no:2181"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka.nada.no:9092,PLAINTEXT_HOST://localhost:29092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+    command: "sh -c '/scripts/wait-for-it.sh zookeeper.nada.no:2181 -- /etc/confluent/docker/run'"
+    volumes:
+      - ./composescripts:/scripts
+
+  schema-registry:
+    container_name: schema-registry
+    networks:
+      nada.no:
+        aliases:
+          - schema-registry.nada.no
+    image: "confluentinc/cp-schema-registry:5.4.0"
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "PLAINTEXT://kafka.nada.no:9092"
+      SCHEMA_REGISTRY_HOST_NAME: "schema-registry.nada.no"
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+    depends_on:
+      - zookeeper
+      - kafka
+
+networks:
+  nada.no:
