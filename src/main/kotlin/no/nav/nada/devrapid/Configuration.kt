@@ -59,7 +59,6 @@ data class DevRapid(
     }
     private fun addSecurity(): Properties {
         return Properties().apply {
-
         }
     }
 }

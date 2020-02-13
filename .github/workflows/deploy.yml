@@ -32,6 +32,8 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Build
         run: ./gradlew build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Lag tag for image
         run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
 

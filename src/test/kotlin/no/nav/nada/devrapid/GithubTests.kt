@@ -1,5 +1,6 @@
 package no.nav.nada.devrapid
 
+import com.sksamuel.avro4k.Avro
 import io.ktor.application.Application
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -31,6 +32,23 @@ class GithubTests {
         val messageSender: MessageSender = object : MessageSender {
             override suspend fun sendDevEvent(devEvent: DevEvent) {
                 assertThat(devEvent.nrn.id).isEqualTo("nrn:github:unleash:deploy:200922047")
+            }
+        }
+        withTestApplication(devRapidApi(messageSender)) {
+            val status = handleRequest(HttpMethod.Post, "/github/deploy") {
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                setBody(devEvent)
+            }.response.status()
+            assertThat(status).isEqualTo(HttpStatusCode.Accepted)
+        }
+    }
+    @Test
+    fun `Can handle converting to GenericRecord from DevEvent`() {
+        val devEvent = "deploymentevent.json".fromFile()
+        val messageSender: MessageSender = object : MessageSender {
+            override suspend fun sendDevEvent(devEvent: DevEvent) {
+                val record = Avro.default.toRecord(DevEvent.serializer(), devEvent)
+                assertThat(record.get("application")).isEqualTo("unleash")
             }
         }
         withTestApplication(devRapidApi(messageSender)) {
