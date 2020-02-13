@@ -29,3 +29,6 @@ spec:
     requests:
       cpu: 300m
       memory: 384Mi
+
+  envFrom:
+    - secret: nada-devrapid
