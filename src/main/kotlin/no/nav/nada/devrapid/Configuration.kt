@@ -12,6 +12,8 @@ import io.confluent.kafka.serializers.KafkaAvroSerializerConfig
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.config.SaslConfigs
+import org.apache.kafka.common.config.SslConfigs
+import java.io.File
 import java.util.Properties
 import java.util.UUID
 
@@ -82,6 +84,12 @@ data class DevRapid(
                 SaslConfigs.SASL_JAAS_CONFIG,
                 """org.apache.kafka.common.security.plain.PlainLoginModule required username="$username" password="$password";"""
             )
+            put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "")
+            System.getenv("NAV_TRUSTSTORE_PATH")?.let {
+                put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL")
+                put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, File(it).absolutePath)
+                put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, System.getenv("NAV_TRUSTSTORE_PASSWORD"))
+            }
         }
     }
 }
