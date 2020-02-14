@@ -24,8 +24,8 @@ private val local = ConfigurationMap(
         "devrapid.topic" to "aapen.nada.devrapid",
         "devrapid.bootstrap" to "localhost:9092",
         "devrapid.schemaregistry.url" to "http://localhost:8081",
-        "devrapid.schemaregistry.username" to "http://localhost:8081",
-        "devrapid.schemaregistry.password" to "http://localhost:8081"
+        "devrapid.schemaregistry.username" to "",
+        "devrapid.schemaregistry.password" to ""
     )
 )
 
@@ -47,8 +47,8 @@ data class DevRapid(
     val password: String = config()[Key("devrapid.password", stringType)],
     val topic: String = config()[Key("devrapid.topic", stringType)],
     val schemaRegistryUrl: String = config()[Key("devrapid.schemaregistry.url", stringType)],
-    val schemaRegistryUsername: String? = config()[Key("devrapid.schemaregistry.username", stringType)],
-    val schemaRegistryPassword: String? = config()[Key("devrapid.schemaregistry.password", stringType)]
+    val schemaRegistryUsername: String = config()[Key("devrapid.schemaregistry.username", stringType)],
+    val schemaRegistryPassword: String = config()[Key("devrapid.schemaregistry.password", stringType)]
 ) {
     fun toProducerProps(): Properties {
         return Properties().apply {
