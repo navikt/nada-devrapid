@@ -9,7 +9,9 @@ import com.natpryce.konfig.overriding
 import com.natpryce.konfig.stringType
 import io.confluent.kafka.serializers.KafkaAvroSerializer
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig
+import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.ProducerConfig
+import org.apache.kafka.common.config.SaslConfigs
 import java.util.Properties
 import java.util.UUID
 
@@ -21,7 +23,9 @@ private val local = ConfigurationMap(
         "devrapid.password" to "",
         "devrapid.topic" to "aapen.nada.devrapid",
         "devrapid.bootstrap" to "localhost:9092",
-        "devrapid.schemaregistry" to "http://localhost:8081"
+        "devrapid.schemaregistry.url" to "http://localhost:8081",
+        "devrapid.schemaregistry.username" to "http://localhost:8081",
+        "devrapid.schemaregistry.password" to "http://localhost:8081"
     )
 )
 
@@ -42,12 +46,14 @@ data class DevRapid(
     val username: String = config()[Key("devrapid.username", stringType)],
     val password: String = config()[Key("devrapid.password", stringType)],
     val topic: String = config()[Key("devrapid.topic", stringType)],
-    val schemaRegistry: String = config()[Key("devrapid.schemaregistry", stringType)]
+    val schemaRegistryUrl: String = config()[Key("devrapid.schemaregistry.url", stringType)],
+    val schemaRegistryUsername: String? = config()[Key("devrapid.schemaregistry.username", stringType)],
+    val schemaRegistryPassword: String? = config()[Key("devrapid.schemaregistry.password", stringType)]
 ) {
     fun toProducerProps(): Properties {
         return Properties().apply {
             put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
-            put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistry)
+            put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl)
             put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer::class.java)
             put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer::class.java)
             put(ProducerConfig.ACKS_CONFIG, "1")
@@ -55,10 +61,27 @@ data class DevRapid(
             if (username.isNotEmpty()) {
                 putAll(addSecurity())
             }
+            if (schemaRegistryUsername.isNotEmpty()) {
+                putAll(schemaRegistryDetails())
+            }
         }
     }
+
+    private fun schemaRegistryDetails(): Properties {
+        return Properties().apply {
+            put("basic.auth.credentials.source", "USER_INFO")
+            put("basic.auth.user.info", "$schemaRegistryUsername:$schemaRegistryPassword")
+        }
+    }
+
     private fun addSecurity(): Properties {
         return Properties().apply {
+            put(SaslConfigs.SASL_MECHANISM, "PLAIN")
+            put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
+            put(
+                SaslConfigs.SASL_JAAS_CONFIG,
+                """org.apache.kafka.common.security.plain.PlainLoginModule required username="$username" password="$password";"""
+            )
         }
     }
 }
