@@ -36,6 +36,3 @@ spec:
     outbound:
       external:
         - host: kafka-20d0c731-nav-23d2.aivencloud.com
-          ports:
-            - 26495
-            - 26487
