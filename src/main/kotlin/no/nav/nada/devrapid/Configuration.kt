@@ -20,7 +20,6 @@ import java.util.UUID
 private val local = ConfigurationMap(
     mapOf(
         "server.port" to "9090",
-        "devrapid.bootstrap" to "localhost:9092",
         "devrapid.username" to "",
         "devrapid.password" to "",
         "devrapid.topic" to "aapen.nada.devrapid",
@@ -93,6 +92,7 @@ data class DevRapid(
         }
     }
 }
+
 fun config() = when (System.getenv("NAIS_CLUSTER_NAME")) {
     "dev-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables overriding dev
     "prod-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables overriding prod
