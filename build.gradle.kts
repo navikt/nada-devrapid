@@ -56,7 +56,7 @@ dependencies {
     implementation(Kafka.clients)
     implementation(Confluent.avroSerializer)
     implementation(Nada.devRapidSchema)
-    implementation("com.sksamuel.avro4k:avro4k-core:0.20.0")
+    implementation(Avro4k.core)
 
     // Logging
     implementation(Kotlin.Logging.kotlinLogging)

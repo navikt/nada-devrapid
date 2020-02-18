@@ -10,6 +10,12 @@ object Avro {
     fun library(artifactId: String) = "org.apache.avro:$artifactId:$version"
 }
 
+object Avro4k {
+    const val version = "0.21.0"
+    const val groupId = "com.sksamuel.avro4k"
+    const val core = "$groupId:avro4k-core:$version"
+}
+
 object Confluent {
     const val version = "5.4.0"
     const val avroSerializer = "io.confluent:kafka-avro-serializer:$version"
@@ -47,7 +53,7 @@ object Kotlin {
 }
 
 object Ktor {
-    const val version = "1.2.5"
+    const val version = "1.3.0"
     const val groupId = "io.ktor"
     fun server(subComponent: String) = "$groupId:ktor-server-$subComponent:$version"
     fun metrics(subComponent: String) = "$groupId:ktor-metrics-$subComponent:$version"
@@ -72,7 +78,7 @@ object Micrometer {
 }
 
 object Nada {
-    const val version = "2.0.1"
+    const val version = "3.0.0"
     const val devRapidSchema = "no.nav.nada:nada-devrapid-schema:$version"
 }
 

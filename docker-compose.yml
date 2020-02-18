@@ -11,9 +11,11 @@ services:
           - nada-devrapid.nada.no
     environment:
       DEVRAPID_BOOTSTRAP: kafka.nada.no:9092
+      DEVRAPID_SCHEMAREGISTRY_URL: http://schema-registry.nada.no:8081
 
     depends_on:
       - kafka
+      - schema-registry
 
   zookeeper:
     container_name: zookeeper
@@ -47,7 +49,23 @@ services:
     command: "sh -c '/scripts/wait-for-it.sh zookeeper.nada.no:2181 -- /etc/confluent/docker/run'"
     volumes:
       - ./composescripts:/scripts
-
+  restproxy:
+    container_name: restproxy
+    image: confluentinc/cp-kafka-rest:5.4.0
+    networks:
+      nada.no:
+        aliases:
+          - restproxy.nada.no
+    ports:
+      - "8082:8082"
+    depends_on:
+      - kafka
+      - zookeeper
+    environment:
+      KAFKA_REST_ZOOKEEPER_CONNECT: "zookeeper.nada.no:2181"
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry.nada.no:8081"
+      KAFKA_REST_HOST_NAME: "restproxy.nada.no"
   schema-registry:
     container_name: schema-registry
     networks:
@@ -64,6 +82,22 @@ services:
     depends_on:
       - zookeeper
       - kafka
+  topicsui:
+    container_name: topicsui
+    image: landoop/kafka-topics-ui
+    networks:
+      nada.no:
+        aliases:
+          - topicsui.nada.no
+    ports:
+      - "8000:8000"
+    environment:
+      KAFKA_REST_PROXY_URL: "http://restproxy.nada.no:8082"
+      PROXY: "true"
+    depends_on:
+      - kafka
+      - schema-registry
+      - restproxy
 
 networks:
   nada.no:
