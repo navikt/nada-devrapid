@@ -15,12 +15,12 @@ class KafkaMessageSender(val topic: String, val kafkaProducer: KafkaProducer<Gen
     override suspend fun sendDevEvent(devEvent: DevEvent) {
         val value = Avro.default.toRecord(DevEvent.serializer(), devEvent)
         val key = Avro.default.toRecord(NadaResourceNames.serializer(), devEvent.nrn)
-        kafkaProducer.send(ProducerRecord(topic, key, value), { m, err ->
+        kafkaProducer.send(ProducerRecord(topic, key, value)) { m, err ->
             if (err != null) {
                 logger.warn { err }
             } else {
                 logger.info { "Sent message with offset ${m.offset()} on partition ${m.partition()}" }
             }
-        })
+        }
     }
 }
