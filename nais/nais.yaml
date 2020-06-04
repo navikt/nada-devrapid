@@ -38,12 +38,15 @@ spec:
         - host: b27apvl00046.preprod.local
           ports:
             - port: 8443
-              protocol: HTTPS
+              protocol: TCP
+              name: kafka
         - host: b27apvl00047.preprod.local
           ports:
             - port: 8443
-              protocol: HTTPS
+              protocol: TCP
+              name: kafka
         - host: b27apvl00045.preprod.local
           ports:
             - port: 8443
-              protocol: HTTPS
+              protocol: TCP
+              name: kafka
