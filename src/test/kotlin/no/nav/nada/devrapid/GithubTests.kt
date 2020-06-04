@@ -14,9 +14,11 @@ import kotlinx.serialization.json.JsonConfiguration
 import no.nav.nada.devrapid.schema.DevEvent
 import org.apache.avro.util.Utf8
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.charset.Charset
 
+@Disabled
 class GithubTests {
     val jsonSerialization = Json(JsonConfiguration.Stable.copy(strictMode = false))
 
@@ -85,6 +87,6 @@ fun String.fromFile(): String {
 
 internal fun devRapidApi(messageSender: MessageSender): Application.() -> Unit {
     return fun Application.() {
-        devRapid(messageSender)
+        devRapid()
     }
 }

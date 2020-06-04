@@ -20,9 +20,7 @@ import io.prometheus.client.CollectorRegistry
 import kotlinx.serialization.MissingFieldException
 import no.nav.nada.devrapid.health.health
 
-fun Application.devRapid(
-    messageSender: MessageSender
-) {
+fun Application.devRapid() {
     install(DefaultHeaders)
     install(MicrometerMetrics) {
         registry =
@@ -41,8 +39,6 @@ fun Application.devRapid(
     }
     routing {
         health()
-        github(messageSender)
-        devRapidRoute(messageSender)
     }
 }
 

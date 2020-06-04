@@ -32,7 +32,8 @@ private val local = ConfigurationMap(
 
 private val dev = ConfigurationMap(
     mapOf(
-        "server.port" to "9090"
+        "server.port" to "9090",
+        "devrapid.bootstrap" to "b27apvl00046.preprod.local:8443,b27apvl00045.preprod.local:8443,b27apvl00047.preprod.local"
     )
 )
 private val prod = ConfigurationMap(

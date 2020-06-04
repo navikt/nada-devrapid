@@ -35,4 +35,15 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: kafka-20d0c731-nav-23d2.aivencloud.com
+        - host: b27apvl00046.preprod.local
+          ports:
+            - port: 8443
+              protocol: HTTPS
+        - host: b27apvl00047.preprod.local
+          ports:
+            - port: 8443
+              protocol: HTTPS
+        - host: b27apvl00045.preprod.local
+          ports:
+            - port: 8443
+              protocol: HTTPS
